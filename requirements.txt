@@ -1,2 +1,3 @@
 geopy
+upoints
 # Phigets - download from http://phidgets.com/docs/Language_-_Python#Quick_Downloads
