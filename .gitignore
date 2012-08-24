@@ -1,6 +1,7 @@
 *.pyc
 *.pyo
 .env/*
+.env2/*
 .DS_Store
 .idea/
 .DS_Store
