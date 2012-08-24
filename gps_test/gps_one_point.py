@@ -4,12 +4,11 @@ from geopy import distance
 from gps_test.gps_file_reader import curr_point, curr_point_point
 from upoints import point
 from pololu_servo import ServoPololu
-import time, atexit
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
 WAYPOINTS = [
-    (39.7188683333,-104.702126667),
+    (39.720413,-104.706037),
 ]
 curr_waypoint = 0
 
