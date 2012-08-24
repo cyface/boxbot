@@ -1,14 +1,14 @@
 """Reads data from a GPS file as 'pretend' reading of GPS"""
 
 from geopy import distance
-from gps_test.gps_file_reader import curr_point, curr_point_point
+from numpy import mean, median
 from upoints import point
 from pololu_servo import ServoPololu
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
 WAYPOINTS = [
-    (39.720413,-104.706037),
+    (39.720382,-104.706065),
 ]
 curr_waypoint = 0
 
@@ -31,6 +31,8 @@ latitude = 0.0
 longitude = 0.0
 heading = 0.0
 
+headings = []
+
 ### MAIN LOOP
 while True:
     try:
@@ -44,8 +46,14 @@ while True:
     curr_location_point = point.Point(latitude, longitude)
 
     curr_waypoint_point = point.Point(WAYPOINTS[curr_waypoint][0],WAYPOINTS[curr_waypoint][1])
-    feet_to_waypoint = distance.distance(curr_point, WAYPOINTS[curr_waypoint]).feet
+    feet_to_waypoint = distance.distance(curr_location_tuple, WAYPOINTS[curr_waypoint]).feet
     bearing_to_waypoint = curr_location_point.bearing(curr_waypoint_point)
+
+    headings.append(heading)
+    if len(headings) > 3:
+        headings.pop()
+    heading_avg = mean(headings)
+    heading_median = median(headings)
 
     print("{0},{1},{2}".format(feet_to_waypoint, bearing_to_waypoint, heading)),
 
@@ -63,16 +71,15 @@ while True:
         servo.set_servo_ms(1, 1600) # set drive on quick
 
     ### Determine Direction
-    bearing_diff = bearing_to_waypoint - heading
-    if bearing_diff < 0:
+    bearing_diff = bearing_to_waypoint - heading_avg
+    if bearing_diff < 0 and abs(bearing_diff)> 30:
         print("********TURN LEFT! {0}").format(bearing_diff)
-        servo.set_servo_ms(0, 1750) # turn ?
-    elif bearing_diff > 0:
+        servo.set_servo_ms(0, 1604) # turn ?
+    elif bearing_diff > 0 and abs(bearing_diff) > 30:
         print("********TURN RIGHT! {0}").format(bearing_diff)
-        servo.set_servo_ms(0, 1400) # turn ?
+        servo.set_servo_ms(0, 1454) # turn ?
     else:
         servo.set_servo_ms(0, 1554) # Drive straight
-
     #time.sleep(.02) # Delay loop a little
 
 
