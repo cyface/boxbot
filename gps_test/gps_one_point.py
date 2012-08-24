@@ -23,7 +23,7 @@ except PhidgetException as e:
     exit(1)
 
 ### SERVO SETUP
-servo = ServoPololu()
+servo = ServoPololu(port="COM3")
 servo.reset_all()
 
 ### Variable Init

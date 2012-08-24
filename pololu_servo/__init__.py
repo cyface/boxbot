@@ -34,3 +34,6 @@ class ServoPololu():
         position_tuple = struct.unpack('<h', position_string)
         position_ms = position_tuple[0] / 4 # / 4 to convert from quarter-ms to ms
         return position_ms
+
+    def __init__(self, port='/dev/tty.usbmodem00042141'):
+        self.port = port
