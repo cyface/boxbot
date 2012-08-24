@@ -51,18 +51,18 @@ while True:
     bearing_to_waypoint = curr_location_point.bearing(curr_waypoint_point)
 
     headings.append(heading)
-    if len(headings) > 3:
+    if len(headings) > 6:
         headings.pop(0)
     heading_avg = mean(headings)
     heading_median = median(headings)
 
     bearings.append(bearing_to_waypoint)
-    if len(bearings) > 3:
+    if len(bearings) > 6:
         bearings.pop(0)
     bearing_avg = mean(bearings)
-    heading_median = median(bearings)
+    bearing_median = median(bearings)
 
-    print("{0},{1},{2}".format(feet_to_waypoint, bearing_avg, heading_avg)),
+    print("{0},{1},{2}".format(feet_to_waypoint, bearing_median, heading_median)),
 
     ### Determine Speed
     if feet_to_waypoint < 5:  # Made it!
@@ -78,7 +78,7 @@ while True:
         servo.set_servo_ms(1, 1600) # set drive on quick
 
     ### Determine Direction
-    bearing_diff = bearing_avg - heading_avg
+    bearing_diff = bearing_median - heading_median
     if bearing_diff < 0 and abs(bearing_diff)> 30:
         print("********TURN LEFT! {0}").format(bearing_diff)
         servo.set_servo_ms(0, 1604) # turn ?
