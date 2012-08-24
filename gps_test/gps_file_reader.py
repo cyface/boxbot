@@ -5,56 +5,62 @@ from upoints import point
 from pololu_servo import ServoPololu
 
 CORNERS = [
-    (39.71899, -104.7021267),
-    (39.71919833, -104.7022917),
-    (39.71922, -104.7026317),
-    (39.71888167, -104.7029133)
+    (39.7188683333,-104.702126667),
+    (39.7188783333,-104.70285),
+    (39.71887,-104.702193333),
+    (39.7188983333,-104.702183333)
 ]
 
 curr_corner = 0
-last_point = point.Point(0,0)
 servo = ServoPololu()
 
-with open('gps_test_data.csv') as gps_file:
+with open('gps_log2.csv') as gps_file:
 
     servo.reset_all()
 
     for row in gps_file:
-        (latstring, lonstring) = row.split(',')
-        curr_point = (float(latstring), float(lonstring))
-        curr_point_point = point.Point(latstring, lonstring)
+        (date,time,lat,long,altitude,velocity,heading) = row.split(',')
+        if date == 'Date':
+            continue # skip header row
+
+        curr_point = (float(lat), float(long))
+        curr_point_point = point.Point(lat, long)
+        heading = float(heading.rstrip())
+
         curr_corner_point = point.Point(CORNERS[curr_corner][0],CORNERS[curr_corner][1])
         dist_to_corner = distance.distance(curr_point, CORNERS[curr_corner]).feet
-        bearing = curr_point_point.bearing(curr_corner_point)
-        curr_bearing = last_point.bearing(curr_point_point)
-        last_point = curr_point_point
-        print("{0},{1},{2}".format(dist_to_corner, bearing, curr_bearing))
+        bearing_to_corner = curr_point_point.bearing(curr_corner_point)
+
+        print("{0},{1},{2}".format(dist_to_corner, bearing_to_corner, heading)),
 
 
-        if dist_to_corner < 10:
-            servo.set_servo_ms(1, 1588) # set drive on
-            print ("UNDER TEN FEET, SLOW DOWN")
-        elif dist_to_corner < 2:
-            servo.set_servo_ms(1, 1588) # set drive on
-            print ("TWO FEET, TURN!!")
+        if dist_to_corner < 2:
+            servo.set_servo_ms(1, 1585) # set drive on
+            print ("   TWO FEET, TURN!!"),
             if curr_corner < len(CORNERS) - 1:
+                print("\n\n CHANGE CORNER!!! \n\n")
                 curr_corner += 1
             else:
                 servo.reset_all() # reset all servos
-                print("DONE!")
+                print("   DONE!"),
                 exit(1)
-        else:
-            print("DRIVE!")
-            servo.set_servo_ms(1, 1900) # set drive on quick
 
-        bearing_diff = bearing - curr_bearing
+        elif dist_to_corner < 10:
+            servo.set_servo_ms(1, 1585) # set drive on
+            print ("   UNDER TEN FEET, SLOW DOWN"),
+
+        else:
+            print("   DRIVE!"),
+            servo.set_servo_ms(1, 1600) # set drive on quick
+
+        bearing_diff = bearing_to_corner - heading
         if bearing_diff < 0:
-            print("TURN LEFT! {0}").format(bearing_diff)
-            servo.set_servo_ms(0, 1700) # turn ?
+            print("   TURN LEFT! {0}").format(bearing_diff)
+            servo.set_servo_ms(0, 1750) # turn ?
         elif bearing_diff > 0:
-            print("TURN RIGHT! {0}").format(bearing_diff)
+            print("   TURN RIGHT! {0}").format(bearing_diff)
             servo.set_servo_ms(0, 1400) # turn ?
         else:
-            print("DRIVE STRAIGHT! {0}").format(bearing_diff)
+            print("   DRIVE STRAIGHT! {0}").format(bearing_diff)
             servo.set_servo_ms(0, 1554) # Drive straight
 

@@ -15,7 +15,7 @@ class ServoPololu():
         self.send_message(message)
 
     def set_servo_ms(self, servo_num, ms_value):
-        message = '\x84\x00'
+        message = '\x84' + chr(servo_num)
         target = ms_value * 4 # * 4 to yield quarter-ms
         message += chr(target & 0x7F) # low byte
         message += chr((target >> 7) & 0x7F) # high byte
@@ -23,10 +23,12 @@ class ServoPololu():
 
     def get_servo_ms(self, servo_num):
         """Pulls live Serial Stream"""
-        message = '\x90\x00'
+        message = '\x90' + chr(servo_num)
         ser = serial.Serial(port=self.port, timeout=self.timeout)
         ser.write(message)
         position_string = ser.read(2)
+        print "POS"
+        print position_string
         ser.close()
 
         position_tuple = struct.unpack('<h', position_string)
