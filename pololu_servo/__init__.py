@@ -2,7 +2,7 @@
 import struct, serial
 
 class ServoPololu():
-    port = '/dev/tty.usbmodem00042141'
+    port = ''
     timeout = 1 # 1 second
 
     def send_message(self, message):
