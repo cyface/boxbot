@@ -27,8 +27,6 @@ class MaestroServoController():
         ser = serial.Serial(port=self.port, timeout=self.timeout)
         ser.write(message)
         position_string = ser.read(2)
-        print "POS"
-        print position_string
         ser.close()
 
         position_tuple = struct.unpack('<h', position_string)

@@ -9,7 +9,8 @@ from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
 WAYPOINTS = [
-    (39.720382,-104.706065),
+    (39.720382,-104.706065), # WaterCover
+#    (39.720378, -104.706232), # Driveway
 ]
 curr_waypoint = 0
 
@@ -34,7 +35,7 @@ STEERING_CENTER = 1554
 STEERING_GAIN = 1.04
 
 ### COMPASS SETUP
-compass = CMPS03(port="COM8")
+compass = CMPS03(port="COM5")
 
 ### Variable Init
 latitude = 0.0
@@ -62,20 +63,28 @@ while True:
     bearing_to_waypoint = curr_location_point.bearing(curr_waypoint_point)
 
     headings_gps.append(heading)
-    if len(headings_gps) > 6:
+    if len(headings_gps) > 3:
         headings_gps.pop(0)
     heading_gps_avg = mean(headings_gps)
     heading_gps_median = median(headings_gps)
 
+    compass_reading = compass.get_heading() - 66
+    headings_compass.append(compass_reading)
+    if len(headings_compass) > 3:
+        headings_compass.pop(0)
+    heading_compass_avg = mean(headings_compass)
+    heading_compass_median = median(headings_compass)
+
     bearings.append(bearing_to_waypoint)
-    if len(bearings) > 6:
+    if len(bearings) > 5:
         bearings.pop(0)
     bearing_avg = mean(bearings)
     bearing_median = median(bearings)
 
-    compass_reading = compass.get_heading()
+    if len(bearings) < 5 or len(headings_compass) < 3 or len (headings_gps) < 3:
+        continue
 
-    print("{0},{1},{2}".format(feet_to_waypoint, bearing_median, heading_gps_median, compass_reading)),
+    print("{0},{1},{2},{3},{4}".format(feet_to_waypoint, bearing_median, heading_gps_median, compass_reading, heading_compass_median)),
 
     ### Determine Speed
     if feet_to_waypoint < 5:  # Made it!
@@ -93,7 +102,7 @@ while True:
     ### Determine Direction
     bearing_diff = bearing_median - heading_gps_median
 
-    bearing_ms = (bearing_diff * STEERING_GAIN) + STEERING_CENTER
+    bearing_ms = int((bearing_diff * STEERING_GAIN) + STEERING_CENTER)
     servo.set_servo_ms(0, bearing_ms) # set drive on
 
     print(",{0},{1}".format(servo.get_servo_ms(0), servo.get_servo_ms(1)))

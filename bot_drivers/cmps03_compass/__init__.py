@@ -32,9 +32,7 @@ class CMPS03():
         ser.close()
 
         heading_int = ord(heading_string)
-
         heading_decimal = round((heading_int / 255.0) * 360, 1)
-
         return heading_decimal
 
     def __init__(self, port='/dev/tty.usbserial-A100A1EK'):
