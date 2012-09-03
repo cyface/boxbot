@@ -4,6 +4,7 @@ from geopy import distance
 from numpy import mean, median
 from upoints import point
 from pololu_servo import ServoPololu
+from devantech_compass import CMPS03
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
@@ -25,13 +26,23 @@ except PhidgetException as e:
 ### SERVO SETUP
 servo = ServoPololu(port="COM3")
 servo.reset_all()
+THROTTLE_MAX = 1600
+THROTTLE_MIN = 1585
+STEERING_FULL_RIGHT = 1654
+STEERING_FULL_LEFT = 1454
+STEERING_CENTER = 1554
+STEERING_GAIN = 1.04
+
+### COMPASS SETUP
+compass = CMPS03(port="COM8")
 
 ### Variable Init
 latitude = 0.0
 longitude = 0.0
 heading = 0.0
 
-headings = []
+headings_gps = []
+headings_compass = []
 bearings = []
 
 ### MAIN LOOP
@@ -50,11 +61,11 @@ while True:
     feet_to_waypoint = distance.distance(curr_location_tuple, WAYPOINTS[curr_waypoint]).feet
     bearing_to_waypoint = curr_location_point.bearing(curr_waypoint_point)
 
-    headings.append(heading)
-    if len(headings) > 6:
-        headings.pop(0)
-    heading_avg = mean(headings)
-    heading_median = median(headings)
+    headings_gps.append(heading)
+    if len(headings_gps) > 6:
+        headings_gps.pop(0)
+    heading_gps_avg = mean(headings_gps)
+    heading_gps_median = median(headings_gps)
 
     bearings.append(bearing_to_waypoint)
     if len(bearings) > 6:
@@ -62,7 +73,9 @@ while True:
     bearing_avg = mean(bearings)
     bearing_median = median(bearings)
 
-    print("{0},{1},{2}".format(feet_to_waypoint, bearing_median, heading_median)),
+    compass_reading = compass.get_heading()
+
+    print("{0},{1},{2}".format(feet_to_waypoint, bearing_median, heading_gps_median, compass_reading)),
 
     ### Determine Speed
     if feet_to_waypoint < 5:  # Made it!
@@ -71,23 +84,21 @@ while True:
         exit(1)
 
     elif feet_to_waypoint < 10: # Getting close!
-        servo.set_servo_ms(1, 1585) # set drive on
-        print ("*******UNDER TEN FEET, SLOW DOWN*******"),
+        servo.set_servo_ms(1, THROTTLE_MIN) # set drive on
+        print("*******UNDER TEN FEET, SLOW DOWN*******"),
 
     else: # Full steam!
-        servo.set_servo_ms(1, 1600) # set drive on quick
+        servo.set_servo_ms(1, THROTTLE_MAX) # set drive on quick
 
     ### Determine Direction
-    bearing_diff = bearing_median - heading_median
-    if bearing_diff < 0 and abs(bearing_diff)> 30:
-        print("********TURN LEFT! {0}").format(bearing_diff)
-        servo.set_servo_ms(0, 1604) # turn ?
-    elif bearing_diff > 0 and abs(bearing_diff) > 30:
-        print("********TURN RIGHT! {0}").format(bearing_diff)
-        servo.set_servo_ms(0, 1454) # turn ?
-    else:
-        servo.set_servo_ms(0, 1554) # Drive straight
-    #time.sleep(.02) # Delay loop a little
+    bearing_diff = bearing_median - heading_gps_median
+
+    bearing_ms = (bearing_diff * STEERING_GAIN) + STEERING_CENTER
+    servo.set_servo_ms(0, bearing_ms) # set drive on
+
+    print(",{0},{1}".format(servo.get_servo_ms(0), servo.get_servo_ms(1)))
+
+
 
 
 
