@@ -1,6 +1,6 @@
 """Test for CMPS03 Compass Object Driver"""
 
-from devantech_compass import CMPS03
+from bot_drivers.cmps03_compass import CMPS03
 
 compass = CMPS03()
 
