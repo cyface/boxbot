@@ -1,1 +1,1 @@
-Phidgets-based autonomous robot codebase
+BoxBot! A PC/USB-Based Robot for the SparkFun Autonomous Vehicle Competition!
