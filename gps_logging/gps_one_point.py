@@ -3,8 +3,8 @@
 from geopy import distance
 from numpy import mean, median
 from upoints import point
-from pololu_servo import ServoPololu
-from devantech_compass import CMPS03
+from bot_drivers.maestro_servo_controller import MaestroServoController
+from bot_drivers.cmps03_compass import CMPS03
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
@@ -24,7 +24,7 @@ except PhidgetException as e:
     exit(1)
 
 ### SERVO SETUP
-servo = ServoPololu(port="COM3")
+servo = MaestroServoController(port="COM3")
 servo.reset_all()
 THROTTLE_MAX = 1600
 THROTTLE_MIN = 1585

@@ -4,12 +4,12 @@ from geopy import distance
 from numpy import mean, median
 from upoints import point
 from bot_drivers.maestro_servo_controller import MaestroServoController
-from bot_drivers.cmps03_compass import CMPS03
+from bot_drivers.hmc6352_compass import HMC6352
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
 WAYPOINTS = [
-    (39.720382,-104.706065), # WaterCover
+#    (39.720382,-104.706065), # WaterCover
 #    (39.720378, -104.706232), # Driveway
 ]
 curr_waypoint = 0
@@ -35,7 +35,7 @@ STEERING_CENTER = 1554
 STEERING_GAIN = 1.04
 
 ### COMPASS SETUP
-compass = CMPS03(port="COM5")
+compass = HMC6352(port="COM5")
 
 ### Variable Init
 latitude = 0.0

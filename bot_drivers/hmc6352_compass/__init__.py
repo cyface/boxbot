@@ -5,7 +5,7 @@
     This assumes you are using the USB->I2C Module from Devantech:
         http://www.robot-electronics.co.uk/htm/usb_i2c_tech.htm
 """
-import struct, serial
+import struct, serial, time
 
 class HMC6352():
     port = ''
@@ -13,7 +13,7 @@ class HMC6352():
 
     def get_heading(self):
         """Gets Compass Heading"""
-        message = '\x42\x41'
+        message = '\x55\x43\x41\x02'
         ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
         ser.write(message)
         heading_string = ser.read(2)
