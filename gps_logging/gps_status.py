@@ -17,12 +17,13 @@ except PhidgetException as e:
     print("Phidget Exception %i: %s" % (e.code, e.details))
     exit(1)
 
-try:
-    latitude = float(gps.getLatitude())
-    longitude = float(gps.getLongitude())
-    heading = float(gps.getHeading())
-    fix = gps.getPositionFixStatus()
-except PhidgetException as e:
-    print("Phidget Exception %i: %s" % (e.code, e.details))
+while 1:
+    try:
+        latitude = float(gps.getLatitude())
+        longitude = float(gps.getLongitude())
+        heading = float(gps.getHeading())
+        fix = gps.getPositionFixStatus()
+    except PhidgetException as e:
+        print("Phidget Exception %i: %s" % (e.code, e.details))
 
-print ('lat:{0} long:{1} heading:{2} fix:{3}'.format(latitude, longitude, heading, fix))
+    print ('lat:{0} long:{1} heading:{2} fix:{3}'.format(latitude, longitude, heading, fix))

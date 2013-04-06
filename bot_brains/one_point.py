@@ -11,6 +11,7 @@ from Phidgets.Devices.GPS import GPS
 WAYPOINTS = [
 #    (39.720382,-104.706065), # WaterCover
 #    (39.720378, -104.706232), # Driveway
+    (39.7189983333, -104.70223)  #Handicap Sign
 ]
 curr_waypoint = 0
 
@@ -25,7 +26,7 @@ except PhidgetException as e:
     exit(1)
 
 ### SERVO SETUP
-servo = MaestroServoController(port="COM3")
+servo = MaestroServoController(port="COM4")
 servo.reset_all()
 THROTTLE_MAX = 1600
 THROTTLE_MIN = 1585
@@ -68,7 +69,7 @@ while True:
     heading_gps_avg = mean(headings_gps)
     heading_gps_median = median(headings_gps)
 
-    compass_reading = compass.get_heading() - 66
+    compass_reading = compass.get_heading()
     headings_compass.append(compass_reading)
     if len(headings_compass) > 3:
         headings_compass.pop(0)
