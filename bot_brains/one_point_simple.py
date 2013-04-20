@@ -1,12 +1,12 @@
 """Reads data from a GPS file as 'pretend' reading of GPS"""
 
 from geopy import distance
-from numpy import mean, median
 from upoints import point
 from bot_drivers.maestro_servo_controller import MaestroServoController
 from bot_drivers.hmc6352_compass import HMC6352
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
+import atexit
 
 WAYPOINTS = [
     (39.7203733333, -104.706086667),  # WaterCover
@@ -28,6 +28,7 @@ except PhidgetException as e:
 ### SERVO SETUP
 servo = MaestroServoController(port="COM4")
 servo.reset_all()
+atexit.register(servo.reset_all)
 STEERING_SERVO = 0
 DRIVE_SERVO = 1
 
@@ -36,7 +37,7 @@ THROTTLE_MIN = 1585
 STEERING_FULL_RIGHT = 1654
 STEERING_FULL_LEFT = 1454
 STEERING_CENTER = 1554
-STEERING_GAIN = 1.20
+STEERING_GAIN = 1.04
 
 ### COMPASS SETUP
 compass = HMC6352(port="COM5")
@@ -82,7 +83,7 @@ while True:
     ### Determine Direction
     bearing_diff = bearing_to_waypoint - compass_reading
 
-    bearing_ms = int((bearing_diff * STEERING_GAIN) + STEERING_CENTER)
+    bearing_ms = int((bearing_diff * STEERING_GAIN) + STEERING_CENTER)  # Convert Diff to Millisecond Setting
     servo.set_servo_ms(STEERING_SERVO, bearing_ms)  # set steering
 
     print(" DRV:{0} STR:{1}".format(servo.get_servo_ms(DRIVE_SERVO), servo.get_servo_ms(STEERING_SERVO)))
