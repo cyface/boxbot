@@ -9,9 +9,9 @@ from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
 WAYPOINTS = [
-    (39.720382, -104.706065), # WaterCover
-    #    (39.720378, -104.706232), # Driveway
-    #    (39.7189983333, -104.70223)  #Handicap Sign
+    (39.7203733333, -104.706086667),  # WaterCover
+    #    (39.720378, -104.706232),  # Driveway
+    #    (39.7189983333, -104.70223)   #Handicap Sign
 ]
 curr_waypoint = 0
 
@@ -36,7 +36,7 @@ THROTTLE_MIN = 1585
 STEERING_FULL_RIGHT = 1654
 STEERING_FULL_LEFT = 1454
 STEERING_CENTER = 1554
-STEERING_GAIN = 1.04
+STEERING_GAIN = 1.20
 
 ### COMPASS SETUP
 compass = HMC6352(port="COM5")
