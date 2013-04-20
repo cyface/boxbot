@@ -28,6 +28,9 @@ except PhidgetException as e:
 ### SERVO SETUP
 servo = MaestroServoController(port="COM4")
 servo.reset_all()
+STEERING_SERVO = 0
+DRIVE_SERVO = 1
+
 THROTTLE_MAX = 1600
 THROTTLE_MIN = 1585
 STEERING_FULL_RIGHT = 1654
@@ -74,15 +77,15 @@ while True:
         print("*******UNDER TEN FEET, SLOW DOWN*******"),
 
     else:  # Full steam!
-        servo.set_servo_ms(1, THROTTLE_MAX)  # set drive on quick
+        servo.set_servo_ms(DRIVE_SERVO, THROTTLE_MAX)  # set drive on quick
 
     ### Determine Direction
     bearing_diff = bearing_to_waypoint - compass_reading
 
     bearing_ms = int((bearing_diff * STEERING_GAIN) + STEERING_CENTER)
-    servo.set_servo_ms(0, bearing_ms)  # set steering
+    servo.set_servo_ms(STEERING_SERVO, bearing_ms)  # set steering
 
-    print(" DRV:{0} STR:{1}".format(servo.get_servo_ms(0), servo.get_servo_ms(1)))
+    print(" DRV:{0} STR:{1}".format(servo.get_servo_ms(DRIVE_SERVO), servo.get_servo_ms(STEERING_SERVO)))
 
 
 
