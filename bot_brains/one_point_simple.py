@@ -32,8 +32,8 @@ atexit.register(servo.reset_all)
 STEERING_SERVO = 0
 DRIVE_SERVO = 1
 
-THROTTLE_MAX = 1600
-THROTTLE_MIN = 1585
+THROTTLE_MAX = 1610
+THROTTLE_MIN = 1595
 STEERING_FULL_RIGHT = 1660
 STEERING_FULL_LEFT = 1460
 STEERING_CENTER = 1560
@@ -69,7 +69,7 @@ while True:
     print("FT:{0} BR:{1} CMP:{2}".format(feet_to_waypoint, bearing_to_waypoint, compass_reading)),
 
     ### Determine Speed
-    if feet_to_waypoint < 5:  # Made it!
+    if feet_to_waypoint < 4:  # Made it!
         servo.reset_all()  # reset all servos
         print("*******DONE!*******"),
         exit(1)
