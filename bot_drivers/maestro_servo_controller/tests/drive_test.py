@@ -1,6 +1,6 @@
-from pololu_servo import ServoPololu
+from bot_drivers.maestro_servo_controller import MaestroServoController
 
-servo = ServoPololu('COM4')
+servo = MaestroServoController('COM4')
 
 servo.reset_all()
 
