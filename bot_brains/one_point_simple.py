@@ -64,7 +64,7 @@ while True:
     feet_to_waypoint = distance.distance(curr_location_tuple, WAYPOINTS[curr_waypoint]).feet
     bearing_to_waypoint = curr_location_point.bearing(curr_waypoint_point)
 
-    compass_reading = compass.get_heading()
+    compass_reading = compass.get_heading_compensated()
 
     print("FT:{0} BR:{1} CMP:{2}".format(feet_to_waypoint, bearing_to_waypoint, compass_reading)),
 

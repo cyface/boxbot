@@ -8,6 +8,8 @@
 import struct
 import serial
 
+MAG_ADJUSTMENT = -11
+
 
 class HMC6352():
     """Driver for HMC6352 Compass Through USB->I2C Module"""
@@ -25,6 +27,18 @@ class HMC6352():
         heading_tuple = struct.unpack('>h', heading_string)
         heading_float = heading_tuple[0] / 10.0
         return heading_float
+
+    def get_heading_compensated(self):
+        raw_heading = self.get_heading()
+
+        if raw_heading >= MAG_ADJUSTMENT:
+            compensated_heading = raw_heading - MAG_ADJUSTMENT
+        else:
+            remainder = MAG_ADJUSTMENT - raw_heading
+            compensated_heading = 360 - remainder
+
+        return compensated_heading
+
 
     def start_calibration(self):
         """Enters Calibration Mode"""
