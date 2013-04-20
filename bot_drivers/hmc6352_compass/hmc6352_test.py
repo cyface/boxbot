@@ -1,4 +1,4 @@
-"""Test for CMPS03 Compass Object Driver"""
+"""Test for the HMC6352 Compass Object Driver"""
 
 from bot_drivers.hmc6352_compass import HMC6352
 
