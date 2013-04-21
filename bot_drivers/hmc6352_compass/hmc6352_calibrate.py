@@ -3,7 +3,8 @@
 from bot_drivers.hmc6352_compass import HMC6352
 import time
 
-compass = HMC6352("COM5")
+#compass = HMC6352("COM5")
+compass = HMC6352()
 
 print("Prepare to rotate the compass 360 degrees several times.")
 
