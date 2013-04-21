@@ -70,6 +70,15 @@ class HMC6352():
 
         return compensated_heading
 
+    def get_operational_mode(self):
+        """Gets the Current Operational Mode of the Compass"""
+        message = '\x55\x43\x72\x02'
+        ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
+        ser.write(message)
+        heading_string = ser.read(1)
+        ser.close()
+
+        return heading_string
 
     def start_calibration(self):
         """Enters Calibration Mode"""
