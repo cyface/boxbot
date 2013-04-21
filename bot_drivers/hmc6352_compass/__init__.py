@@ -42,13 +42,14 @@ class HMC6352():
 
     def enter_continuous_10hz_mode(self):
         """Sets the compass to continuous reading mode"""
-        message = '\x55\x43\x77\x08\x22\x02'
+        message = '\x56\x42\x47\x74\x01\x42'
         ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
         ser.write(message)
+        ser.close()
 
     def read_heading(self):
         """Reads the compass - only - for use with continuous mode"""
-        message = '\x55\x43\x02'
+        message = '\x54\x43\x02'
         ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
         ser.write(message)
         heading_string = ser.read(2)
@@ -72,24 +73,24 @@ class HMC6352():
 
     def get_operational_mode(self):
         """Gets the Current Operational Mode of the Compass"""
-        message = '\x55\x43\x72\x02'
+        message = '\x56\x43\x67\x74\x01'
         ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
         ser.write(message)
         heading_string = ser.read(1)
         ser.close()
 
-        return heading_string
+        return hex(ord(heading_string))
 
     def start_calibration(self):
         """Enters Calibration Mode"""
-        message = '\x55\x43\x43\x02'
+        message = '\x55\x42\x43'
         ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
         ser.write(message)
         ser.close()
 
     def end_calibration(self):
         """Exits Calibration Mode"""
-        message = '\x55\x43\x45\x02'
+        message = '\x55\x42\x45'
         ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
         ser.write(message)
         ser.close()

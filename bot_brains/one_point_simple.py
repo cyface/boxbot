@@ -9,7 +9,7 @@ from Phidgets.Devices.GPS import GPS
 import atexit
 
 WAYPOINTS = [
-    (39.7203733333, -104.706086667),  # WaterCover
+    (39.720365, -104.706058333),  # WaterCover
     #    (39.720378, -104.706232),  # Driveway
     #    (39.7189983333, -104.70223)   #Handicap Sign
 ]
@@ -36,9 +36,8 @@ THROTTLE_MAX = 1610
 THROTTLE_MIN = 1595
 STEERING_FULL_RIGHT = 1660
 STEERING_FULL_LEFT = 1460
-STEERING_CENTER = 1560
-STEERING_BASE = 1500  # Base for calcs
-STEERING_GAIN = 1.10
+STEERING_CENTER = 1558
+STEERING_GAIN = 1.5
 
 ### COMPASS SETUP
 compass = HMC6352(port="COM5")
@@ -66,7 +65,7 @@ while True:
 
     compass_reading = compass.get_heading_compensated()
 
-    print("FT:{0} BR:{1} CMP:{2}".format(feet_to_waypoint, bearing_to_waypoint, compass_reading)),
+    print("FT:{0} BR:{1} HD:{2} CMP:{3}".format(feet_to_waypoint, bearing_to_waypoint, heading, compass_reading)),
 
     ### Determine Speed
     if feet_to_waypoint < 4:  # Made it!
