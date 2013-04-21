@@ -8,7 +8,7 @@
 import struct
 import serial
 
-MAG_ADJUSTMENT = -11
+MAG_ADJUSTMENT = 11
 
 
 class HMC6352():
@@ -29,7 +29,36 @@ class HMC6352():
         return heading_float
 
     def get_heading_compensated(self):
+        """Gets Compass Heading Compensated for Declination"""
         raw_heading = self.get_heading()
+
+        if raw_heading >= MAG_ADJUSTMENT:
+            compensated_heading = raw_heading - MAG_ADJUSTMENT
+        else:
+            remainder = MAG_ADJUSTMENT - raw_heading
+            compensated_heading = 360 - remainder
+
+        return compensated_heading
+
+    def enter_continuous_10hz_mode(self):
+        """Sets the compass to continuous reading mode"""
+        message = '\x55\x43\x77\x08\x22\x02'
+        ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
+        ser.write(message)
+
+    def read_heading(self):
+        """Reads the compass - only - for use with continuous mode"""
+        ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
+        heading_string = ser.read(2)
+        ser.close()
+
+        heading_tuple = struct.unpack('>h', heading_string)
+        heading_float = heading_tuple[0] / 10.0
+        return heading_float
+
+    def read_heading_compensated(self):
+        """Reads Compass Heading Compensated for Declination - Only Used With Continuous Mode"""
+        raw_heading = self.read_heading()
 
         if raw_heading >= MAG_ADJUSTMENT:
             compensated_heading = raw_heading - MAG_ADJUSTMENT
