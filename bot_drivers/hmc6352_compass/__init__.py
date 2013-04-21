@@ -48,7 +48,9 @@ class HMC6352():
 
     def read_heading(self):
         """Reads the compass - only - for use with continuous mode"""
+        message = '\x55\x43\x02'
         ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
+        ser.write(message)
         heading_string = ser.read(2)
         ser.close()
 
