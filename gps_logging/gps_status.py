@@ -3,7 +3,6 @@
 from geopy import distance
 from numpy import mean, median
 from upoints import point
-from pololu_servo import ServoPololu
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
@@ -23,7 +22,6 @@ while 1:
         longitude = float(gps.getLongitude())
         heading = float(gps.getHeading())
         fix = gps.getPositionFixStatus()
+        print ('lat:{0} long:{1} heading:{2} fix:{3}'.format(latitude, longitude, heading, fix))
     except PhidgetException as e:
         print("Phidget Exception %i: %s" % (e.code, e.details))
-
-    print ('lat:{0} long:{1} heading:{2} fix:{3}'.format(latitude, longitude, heading, fix))

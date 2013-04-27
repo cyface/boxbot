@@ -4,9 +4,7 @@ from geopy import distance
 from upoints import point
 from bot_drivers.maestro_servo_controller import MaestroServoController
 from bot_drivers.hmc6352_compass import HMC6352
-from Phidgets.PhidgetException import PhidgetException
-from Phidgets.Devices.GPS import GPS
-import atexit
+from gps import *
 
 WAYPOINTS = [
     (39.720365, -104.706058333),  # WaterCover
@@ -16,17 +14,10 @@ WAYPOINTS = [
 curr_waypoint = 0
 
 #### GPS SETUP
-gps = None
-try:
-    gps = GPS()
-    gps.openPhidget()
-    gps.waitForAttach(10000)
-except PhidgetException as e:
-    print("Phidget Exception %i: %s" % (e.code, e.details))
-    exit(1)
+gps_session = gps(mode=WATCH_ENABLED)
 
 ### SERVO SETUP
-servo = MaestroServoController(port="COM4")
+servo = MaestroServoController(port="/dev/ttyACM1")
 servo.reset_all()
 atexit.register(servo.reset_all)
 STEERING_SERVO = 0
@@ -46,12 +37,9 @@ heading = 0.0
 
 ### MAIN LOOP
 while True:
-    try:
-        latitude = float(gps.getLatitude())
-        longitude = float(gps.getLongitude())
-        heading = float(gps.getHeading())
-    except PhidgetException as e:
-        print("Phidget Exception %i: %s" % (e.code, e.details))
+    latitude = float(gps_session.lat)
+    longitude = float(gps_session.long)
+    heading = float(gps_session.track)
 
     curr_location_tuple = (latitude, longitude)
     curr_location_point = point.Point(latitude, longitude)

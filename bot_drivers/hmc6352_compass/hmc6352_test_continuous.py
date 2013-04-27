@@ -3,7 +3,8 @@
 from bot_drivers.hmc6352_compass import HMC6352
 
 # compass = HMC6352("COM5")
-compass = HMC6352()
+#compass = HMC6352()
+compass = HMC6352("/dev/ttyUSB0")
 
 print("Current Mode:{0}".format(compass.get_operational_mode()))
 compass.enter_continuous_10hz_mode()
