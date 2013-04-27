@@ -33,23 +33,15 @@ STEERING_GAIN = 1.5
 latitude = 0.0
 longitude = 0.0
 heading = 0.0
-time = 0
+time = ""
 
 ### MAIN LOOP
 while True:
     gps_data = gps_session.next()
-    ept = gps_data.get('ept')
-    lat = gps_data.get('lat')
-    lng = gps_data.get('long')
-    track = gps_data.get('track')
-    if ept:
-        time = ept
-    if lat:
-        latitude = float(lat)
-    if lng:
-        longitude = float(long)
-    if heading:
-        heading = float(track)
+    time = gps_data.get('time', "")
+    latitude = gps_data.get('lat', 0.0)
+    longitude = gps_data.get('long', 0.0)
+    heading = gps_data.get('track', 0.0)
 
     if latitude != 0.0 and longitude != 0.0:
         curr_location_tuple = (latitude, longitude)
