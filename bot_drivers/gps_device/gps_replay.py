@@ -3,7 +3,7 @@
     Useful for testing and development.
 """
 
-from .gps import GPSDevice
+from .gps_device import GPSDevice
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 import datetime
