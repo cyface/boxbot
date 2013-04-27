@@ -3,7 +3,6 @@
 from geopy import distance
 from upoints import point
 from bot_drivers.maestro_servo_controller import MaestroServoController
-from bot_drivers.hmc6352_compass import HMC6352
 from gps import *
 
 WAYPOINTS = [
