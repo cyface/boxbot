@@ -1,8 +1,10 @@
-import time, atexit
+import time
+import atexit
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
 print("Activating Phidget GPS....")
+
 
 def clean_up():
     print("Closing...")
@@ -14,6 +16,7 @@ def clean_up():
         exit(1)
     print("Done.")
     exit(0)
+
 
 atexit.register(clean_up)
 
@@ -30,7 +33,7 @@ print("Date,Time,Lat,Long,Altitude,Velocity,Heading")
 
 while True:
     try:
-        print("{0},{1},{2},{3},{4},{5},{6}").format(
+        print("{0},{1},{2},{3},{4},{5},{6}".format(
             gps.getDate().toString(),
             gps.getTime().toString(),
             gps.getLatitude(),
@@ -38,7 +41,7 @@ while True:
             gps.getAltitude(),
             gps.getVelocity(),
             gps.getHeading(),
-        )
+        ))
     except PhidgetException as e:
         print("Phidget Exception %i: %s" % (e.code, e.details))
 
