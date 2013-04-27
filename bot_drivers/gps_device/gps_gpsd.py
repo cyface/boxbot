@@ -5,7 +5,9 @@ try:
     while True:
         # Do stuff
         report = session.next()
-	print (report)
+	lat = report.get('lat')
+	if lat:
+	    print (lat)
         # Do more stuff
 except StopIteration:
     print "GPSD has terminated"

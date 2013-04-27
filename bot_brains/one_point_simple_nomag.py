@@ -14,12 +14,11 @@ WAYPOINTS = [
 curr_waypoint = 0
 
 #### GPS SETUP
-gps_session = gps(mode=WATCH_ENABLED)
+gps_session = gps(mode=WATCH_ENABLE)
 
 ### SERVO SETUP
 servo = MaestroServoController(port="/dev/ttyACM1")
 servo.reset_all()
-atexit.register(servo.reset_all)
 STEERING_SERVO = 0
 DRIVE_SERVO = 1
 
@@ -37,9 +36,16 @@ heading = 0.0
 
 ### MAIN LOOP
 while True:
-    latitude = float(gps_session.lat)
-    longitude = float(gps_session.long)
-    heading = float(gps_session.track)
+    gps_data = gps_session.next()
+    lat = gps_data.get('lat')
+    long = gps_data.get('long')
+    track = gps_data.get('track')
+    if lat:
+        latitude = float(lat)
+    if long:
+        longitude = float(long)
+    if heading:
+        heading = float(track)
 
     curr_location_tuple = (latitude, longitude)
     curr_location_point = point.Point(latitude, longitude)
@@ -48,7 +54,7 @@ while True:
     feet_to_waypoint = distance.distance(curr_location_tuple, WAYPOINTS[curr_waypoint]).feet
     bearing_to_waypoint = curr_location_point.bearing(curr_waypoint_point)
 
-    print("FT:{0} BR:{1} HD:{2} CMP:{3}".format(feet_to_waypoint, bearing_to_waypoint, heading)),
+    print("FT:{0} BR:{1} HD:{2}".format(feet_to_waypoint, bearing_to_waypoint, heading)),
 
     ### Determine Speed
     if feet_to_waypoint < 4:  # Made it!
