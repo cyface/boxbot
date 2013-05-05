@@ -9,9 +9,9 @@ compass = HMC6352("/dev/ttyUSB0")
 print("Prepare to rotate the compass 360 degrees several times.")
 
 compass.start_calibration()
-print("Start Rotation and Continue for 10 Seconds.")
+print("Start Rotation and Continue for 30 Seconds.")
 
-time.sleep(10)
+time.sleep(30)
 print("Stop Rotation.")
 
 compass.end_calibration()

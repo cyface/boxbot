@@ -1,2 +1,2 @@
 #!/bin/sh
-gpsd /dev/ttyACM1
+gpsd /dev/ttyACM0
