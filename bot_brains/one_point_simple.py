@@ -1,4 +1,4 @@
-"""Reads data from a GPS file as 'pretend' reading of GPS"""
+"""Simple One Point Brain"""
 
 from geopy import distance
 from upoints import point
@@ -7,9 +7,10 @@ from bot_drivers.hmc3592_compass import HMC3592
 from gps import *
 
 WAYPOINTS = [
-    (39.720365, -104.706058333), # WaterCover
-    #    (39.720378, -104.706232),  # Driveway
-    #    (39.7189983333, -104.70223)   #Handicap Sign
+    (39.718853, -104.702214),  # School Point 1
+    (39.720365, -104.706058333),  # WaterCover
+    (39.720378, -104.706232),  # Driveway
+    (39.7189983333, -104.70223)   #Handicap Sign
 ]
 curr_waypoint = 0
 
