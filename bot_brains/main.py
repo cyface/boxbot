@@ -5,13 +5,21 @@ from bot_drivers.maestro_servo_controller import MaestroServoController
 from bot_drivers.compass_device.compass_hmc6352 import HMC6352
 from bot_drivers.gps_device.gps_gpsd import GPSDGPS
 from csv import DictReader
+import ConfigParser
 import os
 
 brain_dir = PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-waypoint_file = file(os.path.join(brain_dir, "waypoints", "school_points.csv"))
+### Read Config
+config = ConfigParser.ConfigParser()
+config.read('bot.cfg')
+SERVO_PORT = config.get('ports', 'servos')
+COMPASS_PORT = config.get('ports', 'compass')
+
+waypoint_config_file = file(os.path.join(brain_dir, "waypoints", "school_points.csv"))
+waypoint_config = ConfigParser.ConfigParser()
 waypoints = []
-for waypoint in DictReader(waypoint_file):
+for waypoint in waypoint_config.items('waypoints'):
     waypoints.append(waypoint)
 curr_waypoint = 0
 
@@ -21,7 +29,7 @@ gps_device.activate()
 gps_device.update()
 
 ### SERVO SETUP
-servo = MaestroServoController(port="/dev/ttyACM1")
+servo = MaestroServoController(port=SERVO_PORT)
 servo.reset_all()
 STEERING_SERVO = 0
 DRIVE_SERVO = 1
@@ -34,7 +42,7 @@ STEERING_CENTER = 1558
 STEERING_GAIN = 12
 
 ### COMPASS SETUP
-compass = HMC6352("/dev/ttyUSB0")
+compass = HMC6352(COMPASS_PORT)
 
 ### Variable Init
 latitude = 0.0
