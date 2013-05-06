@@ -3,17 +3,16 @@
     Useful for testing and development.
 """
 
-from .gps_device import GPSDevice
-from Phidgets.PhidgetException import PhidgetException
-from Phidgets.Devices.GPS import GPS
+from . import GPSDevice
 import datetime
+
 
 class GPSReplay(GPSDevice):
     """Base Class Representing a GPS Device"""
 
-    replay_file_path = None # Path to the comma-delimited GPS Replay File
-    replay_file = None # Python File Handle for the GPS Replay File
-    current_replay = None # Current line from replay file
+    replay_file_path = None  # Path to the comma-delimited GPS Replay File
+    replay_file = None  # Python File Handle for the GPS Replay File
+    current_replay = None  # Current line from replay file
 
     def get_current_latitude(self):
         """Returns current latitude in decimal format"""

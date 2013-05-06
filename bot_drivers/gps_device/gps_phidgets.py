@@ -2,7 +2,7 @@
     Maps the base GPS class to the Phidgets GPS
 """
 
-from .gps_device import GPSDevice
+from . import GPSDevice
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 import datetime
@@ -13,7 +13,7 @@ class GPSPhidgets(GPSDevice):
     This class implements the GPS facade for the Phidgets GPS.
     """
 
-    phidget = None # Holds reference to Phidget device, populated from activate
+    phidget = None  # Holds reference to Phidget device, populated from activate
 
     def get_current_latitude(self):
         try:
@@ -87,7 +87,7 @@ class GPSPhidgets(GPSDevice):
         return self.ready
 
     def activate(self):
-        """Phidget GPS Must be attached via USB cable and powered before calling this, sets is_ready() to True when done"""
+        """Phidget GPS Must be attached via USB cable and powered before calling, sets is_ready() to True when done"""
 
         try:
             self.phidget = GPS()

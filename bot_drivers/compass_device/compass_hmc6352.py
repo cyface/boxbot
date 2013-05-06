@@ -7,11 +7,12 @@
 """
 import struct
 import serial
+from . import CompassDevice
 
 MAG_ADJUSTMENT = 11
 
 
-class HMC6352():
+class HMC6352(CompassDevice):
     """Driver for HMC6352 Compass Through USB->I2C Module"""
     port = ''
     timeout = 1  # 1 second
@@ -27,18 +28,6 @@ class HMC6352():
         heading_tuple = struct.unpack('>h', heading_string)
         heading_float = heading_tuple[0] / 10.0
         return heading_float
-
-    def get_heading_compensated(self):
-        """Gets Compass Heading Compensated for Declination"""
-        raw_heading = self.get_heading()
-
-        if raw_heading >= MAG_ADJUSTMENT:
-            compensated_heading = raw_heading - MAG_ADJUSTMENT
-        else:
-            remainder = MAG_ADJUSTMENT - raw_heading
-            compensated_heading = 360 - remainder
-
-        return compensated_heading
 
     def enter_continuous_10hz_mode(self):
         """Sets the compass to continuous reading mode"""
@@ -58,18 +47,6 @@ class HMC6352():
         heading_tuple = struct.unpack('>h', heading_string)
         heading_float = heading_tuple[0] / 10.0
         return heading_float
-
-    def read_heading_compensated(self):
-        """Reads Compass Heading Compensated for Declination - Only Used With Continuous Mode"""
-        raw_heading = self.read_heading()
-
-        if raw_heading >= MAG_ADJUSTMENT:
-            compensated_heading = raw_heading - MAG_ADJUSTMENT
-        else:
-            remainder = MAG_ADJUSTMENT - raw_heading
-            compensated_heading = 360 - remainder
-
-        return compensated_heading
 
     def get_operational_mode(self):
         """Gets the Current Operational Mode of the Compass"""
@@ -94,6 +71,3 @@ class HMC6352():
         ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
         ser.write(message)
         ser.close()
-
-    def __init__(self, port='/dev/tty.usbserial-A100A1EK'):
-        self.port = port
