@@ -1,10 +1,12 @@
 """Simple One Point Brain"""
 
-from upoints import point
-from drivers.maestro_servo_controller import MaestroServoController as servo_device
-from drivers.compass_device.hmc6352 import HMC6352 as compass_device
-from drivers.gps_device.gps_gpsd import GPSDGPS as gps_device
 import sys
+
+from upoints import point
+from drivers.servo import MaestroServoController as servo_device
+from drivers.compass.hmc6352.hmc6352 import HMC6352 as compass_device
+from drivers.gps.gps_gpsd import GPSDGPS as gps_device
+
 
 WAYPOINT = (39.720356, -104.706041)  # WaterCover
 

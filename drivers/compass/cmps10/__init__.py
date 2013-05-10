@@ -7,7 +7,7 @@
 """
 import struct
 import serial
-from . import CompassDevice
+from .. import CompassDevice
 
 MAG_ADJUSTMENT = 11
 

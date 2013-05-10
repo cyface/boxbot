@@ -1,12 +1,14 @@
 """Simple One Point Brain"""
 
-from upoints import point
-from drivers.maestro_servo_controller import MaestroServoController
-from drivers.compass_device.hmc6352 import HMC6352
-from drivers.gps_device.gps_gpsd import GPSDGPS
 import ConfigParser
-import os
 import sys
+
+from upoints import point
+from drivers.servo import MaestroServoController
+from drivers.compass.hmc6352.hmc6352 import HMC6352
+from drivers.gps.gps_gpsd import GPSDGPS
+import os
+
 
 brain_dir = PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 

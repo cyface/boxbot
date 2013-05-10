@@ -1,6 +1,6 @@
 """Test for the HMC6352 Compass Object Driver"""
 
-from .hmc6352 import HMC6352
+from .drivers.compass.hmc6352.hmc6352 import HMC6352
 
 compass = HMC6352("/dev/ttyUSB0")
 

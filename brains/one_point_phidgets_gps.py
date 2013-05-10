@@ -1,12 +1,14 @@
 """Reads data from a GPS file as 'pretend' reading of GPS"""
 
+import atexit
+
 from geopy import distance
 from upoints import point
-from drivers.maestro_servo_controller import MaestroServoController as servo_device
-from drivers.compass_device.hmc6352 import HMC6352 as compass_device
+from drivers.servo import MaestroServoController as servo_device
+from drivers.compass.hmc6352.hmc6352 import HMC6352 as compass_device
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
-import atexit
+
 
 WAYPOINTS = [
     (39.720365, -104.706058333),  # WaterCover

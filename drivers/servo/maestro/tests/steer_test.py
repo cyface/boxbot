@@ -1,4 +1,4 @@
-from drivers.maestro_servo_controller import MaestroServoController
+from drivers.servo import MaestroServoController
 import time
 
 #servo = MaestroServoController('COM4')
