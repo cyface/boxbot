@@ -2,37 +2,35 @@
 
 from geopy import distance
 from upoints import point
-from pololu_servo import ServoPololu
+from drivers.servo.maestro import MaestroServoController as servo_device
 
 CORNERS = [
-    (39.7188683333,-104.702126667),
-    (39.7188783333,-104.70285),
-    (39.71887,-104.702193333),
-    (39.7188983333,-104.702183333)
+    (39.7188683333, -104.702126667),
+    (39.7188783333, -104.70285),
+    (39.71887, -104.702193333),
+    (39.7188983333, -104.702183333)
 ]
 
 curr_corner = 0
-servo = ServoPololu()
+servo = servo_device()
 
 with open('gps_log2.csv') as gps_file:
-
     servo.reset_all()
 
     for row in gps_file:
-        (date,time,lat,long,altitude,velocity,heading) = row.split(',')
+        (date, time, lat, lng, altitude, velocity, heading) = row.split(',')
         if date == 'Date':
-            continue # skip header row
+            continue  # skip header row
 
-        curr_point = (float(lat), float(long))
-        curr_point_point = point.Point(lat, long)
+        curr_point = (float(lat), float(lng))
+        curr_point_point = point.Point(lat, lng)
         heading = float(heading.rstrip())
 
-        curr_corner_point = point.Point(CORNERS[curr_corner][0],CORNERS[curr_corner][1])
+        curr_corner_point = point.Point(CORNERS[curr_corner][0], CORNERS[curr_corner][1])
         dist_to_corner = distance.distance(curr_point, CORNERS[curr_corner]).feet
         bearing_to_corner = curr_point_point.bearing(curr_corner_point)
 
         print("{0},{1},{2}".format(dist_to_corner, bearing_to_corner, heading)),
-
 
         if dist_to_corner < 2:
             servo.set_servo_ms(1, 1585) # set drive on
@@ -55,12 +53,12 @@ with open('gps_log2.csv') as gps_file:
 
         bearing_diff = bearing_to_corner - heading
         if bearing_diff < 0:
-            print("   TURN LEFT! {0}").format(bearing_diff)
-            servo.set_servo_ms(0, 1750) # turn ?
+            print("   TURN LEFT! {0}".format(bearing_diff))
+            servo.set_servo_ms(0, 1750)  # turn ?
         elif bearing_diff > 0:
-            print("   TURN RIGHT! {0}").format(bearing_diff)
-            servo.set_servo_ms(0, 1400) # turn ?
+            print("   TURN RIGHT! {0}".format(bearing_diff))
+            servo.set_servo_ms(0, 1400)  # turn ?
         else:
-            print("   DRIVE STRAIGHT! {0}").format(bearing_diff)
-            servo.set_servo_ms(0, 1554) # Drive straight
+            print("   DRIVE STRAIGHT! {0}".format(bearing_diff))
+            servo.set_servo_ms(0, 1554)  # Drive straight
 
