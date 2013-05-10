@@ -14,14 +14,14 @@ brain_dir = PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 ### Read Config
 config = ConfigParser.ConfigParser()
-config.read('bot.cfg')
+config.read(os.path.join(brain_dir, 'bot.cfg'))
 SERVO_PORT = config.get('ports', 'servos')
 COMPASS_PORT = config.get('ports', 'compass')
 
 waypoint_config_file = file(os.path.join(brain_dir, "waypoints", "school_points.cfg"))
 waypoint_config = ConfigParser.ConfigParser()
 waypoints = []
-for waypoint in waypoint_config.items('waypoints'):
+for waypoint in waypoint_config.list():
     waypoints.append(waypoint)
 curr_waypoint = 0
 

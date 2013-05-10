@@ -44,7 +44,7 @@ while True:
         time = gps_device.get_datetime()
         latitude = gps_device.get_current_latitude()
         longitude = gps_device.get_current_longitude()
-        heading = compass.get_heading_compensated()
+        heading = compass.get_heading_compensated()-165
 
         if latitude != 0.0 and longitude != 0.0:
             curr_location_point = point.Point(latitude, longitude)
