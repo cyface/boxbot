@@ -1,12 +1,12 @@
-"""Simple One Point Brain"""
+"""Compass With GPS Multi-Point Brain"""
 
 import ConfigParser
 import sys
 
 from upoints import point
-from drivers.servo import MaestroServoController
-from drivers.compass.hmc6352.hmc6352 import HMC6352
-from drivers.gps.gps_gpsd import GPSDGPS
+from drivers.servo.maestro import MaestroServoController as servo_device
+from drivers.compass.cmps10 import CMPS10 as compass_device
+from drivers.gps.gpsd import GPSDGPS as gps_device
 import os
 
 
@@ -18,7 +18,7 @@ config.read('bot.cfg')
 SERVO_PORT = config.get('ports', 'servos')
 COMPASS_PORT = config.get('ports', 'compass')
 
-waypoint_config_file = file(os.path.join(brain_dir, "waypoints", "school_points.csv"))
+waypoint_config_file = file(os.path.join(brain_dir, "waypoints", "school_points.cfg"))
 waypoint_config = ConfigParser.ConfigParser()
 waypoints = []
 for waypoint in waypoint_config.items('waypoints'):
@@ -26,12 +26,12 @@ for waypoint in waypoint_config.items('waypoints'):
 curr_waypoint = 0
 
 #### GPS SETUP
-gps_device = GPSDGPS()
+gps_device = gps_device()
 gps_device.activate()
 gps_device.update()
 
 ### SERVO SETUP
-servo = MaestroServoController(port=SERVO_PORT)
+servo = servo_device(port=SERVO_PORT)
 servo.reset_all()
 STEERING_SERVO = 0
 DRIVE_SERVO = 1
@@ -44,7 +44,7 @@ STEERING_CENTER = 1558
 STEERING_GAIN = 12
 
 ### COMPASS SETUP
-compass = HMC6352(COMPASS_PORT)
+compass = compass_device(COMPASS_PORT)
 
 ### Variable Init
 latitude = 0.0

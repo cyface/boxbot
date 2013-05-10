@@ -3,7 +3,7 @@
 """
 
 import unittest
-from drivers.gps.gps_replay import GPSReplay
+from drivers.gps.replay.gps_replay import GPSReplay
 
 
 class GPSReplayTests(unittest.TestCase):

@@ -3,7 +3,7 @@
     Useful for testing and development.
 """
 
-from . import GPSDevice
+from .. import GPSDevice
 import datetime
 
 

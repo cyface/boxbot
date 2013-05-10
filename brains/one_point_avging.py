@@ -1,29 +1,21 @@
-"""Reads data from a GPS file as 'pretend' reading of GPS"""
+"""Averages readings to go to a single point"""
 
 from geopy import distance
 from numpy import mean, median
 from upoints import point
-from drivers.servo import MaestroServoController as servo_device
+from drivers.servo.maestro import MaestroServoController as servo_device
 from drivers.compass.hmc6352 import HMC6352 as compass_device
-from Phidgets.PhidgetException import PhidgetException
-from Phidgets.Devices.GPS import GPS
+from drivers.gps.phidgets import GPSPhidgets as gps_device
 
 WAYPOINTS = [
-#    (39.720382,-104.706065), # WaterCover
-#    (39.720378, -104.706232), # Driveway
-    (39.7189983333, -104.70223)  #Handicap Sign
+    (39.720382, -104.706065),  # WaterCover
 ]
 curr_waypoint = 0
 
 #### GPS SETUP
 gps = None
-try:
-    gps = GPS()
-    gps.openPhidget()
-    gps.waitForAttach(10000)
-except PhidgetException as e:
-    print("Phidget Exception %i: %s" % (e.code, e.details))
-    exit(1)
+gps = gps_device()
+gps.activate()
 
 ### SERVO SETUP
 servo = servo_device(port="COM4")
@@ -49,12 +41,9 @@ bearings = []
 
 ### MAIN LOOP
 while True:
-    try:
-        latitude = float(gps.getLatitude())
-        longitude = float(gps.getLongitude())
-        heading = float(gps.getHeading())
-    except PhidgetException as e:
-        print("Phidget Exception %i: %s" % (e.code, e.details))
+    latitude = float(gps.get_current_latitude())
+    longitude = float(gps.get_current_longitude())
+    heading = float(gps.get_current_heading())
 
     curr_location_tuple = (latitude, longitude)
     curr_location_point = point.Point(latitude, longitude)

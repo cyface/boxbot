@@ -2,14 +2,13 @@
     Maps the base GPS class to a Linux gpsd GPS
 """
 
+from .. import GPSDevice
 from gps import *
-from . import GPSDevice
-import datetime
 
 
 class GPSDGPS(GPSDevice):
     """
-    This class implements the GPS facade for the GPSD GPS.
+    This class implements the GPS Driver for the GPSD GPS.
     """
 
     gpsd = None  # Holds reference to gpsd device, populated from activate
@@ -65,3 +64,4 @@ class GPSDGPS(GPSDevice):
         """Tells the GPS to shut down, sets is_ready() to False when done"""
         self.ready = False
 
+__author__ = 'cyface'
