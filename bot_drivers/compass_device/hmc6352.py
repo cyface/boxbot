@@ -48,6 +48,18 @@ class HMC6352(CompassDevice):
         heading_float = heading_tuple[0] / 10.0
         return heading_float
 
+    def read_heading_compensated(self):
+        """Reads Compass Heading Compensated for Declination - Only Used With Continuous Mode"""
+        raw_heading = self.read_heading()
+
+        if raw_heading >= MAG_ADJUSTMENT:
+            compensated_heading = raw_heading - MAG_ADJUSTMENT
+        else:
+            remainder = MAG_ADJUSTMENT - raw_heading
+            compensated_heading = 360 - remainder
+
+        return compensated_heading
+
     def get_operational_mode(self):
         """Gets the Current Operational Mode of the Compass"""
         message = '\x56\x43\x67\x74\x01'

@@ -3,8 +3,8 @@
 from geopy import distance
 from numpy import mean, median
 from upoints import point
-from bot_drivers.maestro_servo_controller import MaestroServoController
-from bot_drivers.hmc6352_compass import HMC6352
+from bot_drivers.maestro_servo_controller import MaestroServoController as servo_device
+from bot_drivers.compass_device.hmc6352 import HMC6352 as compass_device
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
@@ -26,7 +26,7 @@ except PhidgetException as e:
     exit(1)
 
 ### SERVO SETUP
-servo = MaestroServoController(port="COM4")
+servo = servo_device(port="COM4")
 servo.reset_all()
 THROTTLE_MAX = 1600
 THROTTLE_MIN = 1585
@@ -36,7 +36,7 @@ STEERING_CENTER = 1554
 STEERING_GAIN = 1.04
 
 ### COMPASS SETUP
-compass = HMC6352(port="COM5")
+compass = compass_device(port="COM5")
 
 ### Variable Init
 latitude = 0.0
