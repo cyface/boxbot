@@ -1,9 +1,9 @@
 """Simple One Point Brain"""
 
 from upoints import point
-from bot_drivers.maestro_servo_controller import MaestroServoController
-from bot_drivers.compass_device.hmc6352 import HMC6352
-from bot_drivers.gps_device.gps_gpsd import GPSDGPS
+from drivers.maestro_servo_controller import MaestroServoController
+from drivers.compass_device.hmc6352 import HMC6352
+from drivers.gps_device.gps_gpsd import GPSDGPS
 import ConfigParser
 import os
 import sys

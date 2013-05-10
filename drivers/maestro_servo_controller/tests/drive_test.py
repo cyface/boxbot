@@ -1,4 +1,4 @@
-from bot_drivers.maestro_servo_controller import MaestroServoController
+from drivers.maestro_servo_controller import MaestroServoController
 
 servo = MaestroServoController('/dev/ttyACM0')
 

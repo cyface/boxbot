@@ -3,8 +3,8 @@
 from geopy import distance
 from numpy import mean, median
 from upoints import point
-from bot_drivers.maestro_servo_controller import MaestroServoController
-from bot_drivers.cmps03_compass import CMPS03
+from drivers.maestro_servo_controller import MaestroServoController
+from drivers.cmps03_compass import CMPS03
 from Phidgets.PhidgetException import PhidgetException
 from Phidgets.Devices.GPS import GPS
 
