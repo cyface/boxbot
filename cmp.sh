@@ -1,2 +1,2 @@
 #!/bin/sh
-python ./bot_drivers/hmc6352_compass/hmc6352_test.py
+python ./drivers/compass/cmps10/cmps10_test.py

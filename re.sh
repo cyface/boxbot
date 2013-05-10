@@ -1,2 +1,2 @@
 #!/bin/sh
-python ./bot_drivers/maestro_servo_controller/tests/reset_all.py
+python ./drivers/servo/maestro/tests/reset_all.py

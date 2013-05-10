@@ -1,2 +1,2 @@
 #!/bin/sh
-python ./bot_brains/main.py
+python ./brains/main.py

@@ -1,1 +1,1 @@
-BoxBot! A PC/USB-Based Robot for the SparkFun Autonomous Vehicle Competition!
+BoxBot! A Netbook/Linux/USB-Based Robot for the SparkFun Autonomous Vehicle Competition!
