@@ -1,6 +1,6 @@
 """Calibration for the HMC6352 Compass Driver"""
 
-from . import HMC6352
+from drivers.compass.hmc6352 import HMC6352
 import time
 
 #compass = HMC6352("COM5")

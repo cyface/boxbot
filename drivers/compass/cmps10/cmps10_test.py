@@ -1,6 +1,6 @@
 """Test for the CMPS10 Compass Object Driver"""
 
-from . import CMPS10
+from drivers.compass.cmps10 import CMPS10
 
 compass = CMPS10("/dev/ttyUSB0")
 
