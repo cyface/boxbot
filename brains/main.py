@@ -2,13 +2,14 @@
 
 import ConfigParser
 import sys
+import os
+import ConfigParser
 
 from upoints import point
 from drivers.servo.maestro import MaestroServoController as servo_device
 from drivers.compass.cmps10 import CMPS10 as compass_device
 from drivers.gps.gpsd import GPSDGPS as gps_device
 import os
-
 
 brain_dir = PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -18,12 +19,14 @@ config.read(os.path.join(brain_dir, 'bot.cfg'))
 SERVO_PORT = config.get('ports', 'servos')
 COMPASS_PORT = config.get('ports', 'compass')
 
-waypoint_config_file = file(os.path.join(brain_dir, "waypoints", "school_points.cfg"))
+waypoint_config_path = os.path.join(brain_dir, "waypoints", "school_points.cfg")
 waypoint_config = ConfigParser.ConfigParser()
+waypoint_config.read(waypoint_config_path)
 waypoints = []
-for waypoint in waypoint_config.list():
-    waypoints.append(waypoint)
+for waypoint in waypoint_config.sections():
+    waypoints.append(point.Point(waypoint_config.get(waypoint, 'latitude'), waypoint_config.get(waypoint, 'longitude')))
 curr_waypoint = 0
+curr_waypoint_point = waypoints[curr_waypoint]
 
 #### GPS SETUP
 gps_device = gps_device()
@@ -51,7 +54,7 @@ latitude = 0.0
 longitude = 0.0
 heading = 0.0
 time = ""
-curr_waypoint_point = point.Point(waypoints[curr_waypoint].get('Latitude'), waypoints[curr_waypoint].get('Longitude'))
+
 
 ### MAIN LOOP
 while True:
