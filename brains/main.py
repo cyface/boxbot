@@ -18,6 +18,7 @@ config = ConfigParser.ConfigParser()
 config.read(os.path.join(brain_dir, 'bot.cfg'))
 SERVO_PORT = config.get('ports', 'servos')
 COMPASS_PORT = config.get('ports', 'compass')
+COMPASS_OFFSET = config.get('compass', 'offset')
 
 waypoint_config_path = os.path.join(brain_dir, "waypoints", "school_points.cfg")
 waypoint_config = ConfigParser.ConfigParser()
@@ -64,7 +65,7 @@ while True:
         time = gps_device.get_datetime()
         latitude = gps_device.get_current_latitude()
         longitude = gps_device.get_current_longitude()
-        heading = compass.get_heading_compensated()
+        heading = compass.get_heading_compensated(COMPASS_OFFSET)
 
         if latitude == 0.0 or longitude == 0.0:  # Skip over empty GPS Readings
             continue
