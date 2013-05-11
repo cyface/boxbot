@@ -39,7 +39,7 @@ time = ""
 
 ### MAIN LOOP
 while True:
-    try:  # Ctrl- C Handler
+    try:  # Ctrl-C Handler
         gps_device.update()
         time = gps_device.get_datetime()
         latitude = gps_device.get_current_latitude()
