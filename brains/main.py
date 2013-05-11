@@ -77,7 +77,7 @@ while True:
         ### Determine Speed
         if meters_to_waypoint <= 2:  # Made it!
             print("*******WP REACHED!*******"),
-            if curr_waypoint == len(WAYPOINTS):
+            if curr_waypoint == len(waypoints):
                 servo.reset_all()  # reset all servos
                 print("\n\n************DONE!**********")
                 exit(1)
