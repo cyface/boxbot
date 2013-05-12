@@ -16,14 +16,14 @@ class CompassDevice():
         """Gets Compass Heading"""
         return 0.0
 
-    def get_heading_compensated(self, OFFSET=MAG_ADJUSTMENT):
+    def get_heading_compensated(self, offset=MAG_ADJUSTMENT):
         """Gets Compass Heading Compensated for Declination"""
         raw_heading = self.get_heading()
 
-        if raw_heading >= MAG_ADJUSTMENT:
-            compensated_heading = raw_heading - MAG_ADJUSTMENT
+        if raw_heading >= offset:
+            compensated_heading = raw_heading - offset 
         else:
-            remainder = MAG_ADJUSTMENT - raw_heading
+            remainder = offset - raw_heading
             compensated_heading = 360 - remainder
 
         return compensated_heading

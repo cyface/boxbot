@@ -18,7 +18,7 @@ config = ConfigParser.ConfigParser()
 config.read(os.path.join(brain_dir, 'bot.cfg'))
 SERVO_PORT = config.get('ports', 'servos')
 COMPASS_PORT = config.get('ports', 'compass')
-COMPASS_OFFSET = config.get('compass', 'offset')
+COMPASS_OFFSET = int(config.get('compass', 'offset'))
 
 waypoint_config_path = os.path.join(brain_dir, "waypoints", "school_points.cfg")
 waypoint_config = ConfigParser.ConfigParser()
@@ -40,8 +40,8 @@ servo.reset_all()
 STEERING_SERVO = 0
 DRIVE_SERVO = 1
 
-THROTTLE_MAX = 1630
-THROTTLE_MIN = 1600
+THROTTLE_MAX = 1600
+THROTTLE_MIN = 1595
 STEERING_FULL_RIGHT = 1660
 STEERING_FULL_LEFT = 1460
 STEERING_CENTER = 1558
@@ -76,7 +76,7 @@ while True:
         bearing_to_waypoint = curr_location_point.bearing(curr_waypoint_point)
 
         ### Determine Speed
-        if meters_to_waypoint <= 2:  # Made it!
+        if meters_to_waypoint <= 2.5:  # Made it!
             print("*******WP REACHED!*******"),
             if curr_waypoint == len(waypoints):
                 servo.reset_all()  # reset all servos
@@ -84,8 +84,7 @@ while True:
                 exit(1)
             else:  # On to Next Waypoint!
                 curr_waypoint += 1
-                curr_waypoint_point = point.Point(waypoints[curr_waypoint].get('Latitude'),
-                                                  waypoints[curr_waypoint].get('Longitude'))
+                curr_waypoint_point = waypoints[curr_waypoint]
 
         elif meters_to_waypoint <= 4:  # Getting close!
             servo.set_servo_ms(1, THROTTLE_MIN)  # Set Drive On at Min Speed
