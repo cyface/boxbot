@@ -11,6 +11,8 @@ waypoint_dir = os.path.abspath(os.path.dirname(__file__))
 gps_device = gps_device()
 gps_device.activate()
 gps_device.update()
+gps_device.update()
+gps_device.update()
 
 ### PARSE ARGUMENTS
 waypoint_file = sys.argv[1]
@@ -30,5 +32,6 @@ with open(os.path.join(waypoint_dir, waypoint_file), 'wb') as configfile:
 print (
     "Saved {0}, {1} as waypoint {2} to {3} .".format(gps_device.get_current_latitude(),
                                                      gps_device.get_current_longitude(),
-                                                     os.path.join(waypoint_num, waypoint_file))
+                                                     waypoint_num,
+                                                     os.path.join(waypoint_dir, waypoint_file))
 )

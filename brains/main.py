@@ -40,12 +40,12 @@ servo.reset_all()
 STEERING_SERVO = 0
 DRIVE_SERVO = 1
 
-THROTTLE_MAX = 1600
-THROTTLE_MIN = 1595
+THROTTLE_MAX = 1615
+THROTTLE_MIN = 1605
 STEERING_FULL_RIGHT = 1660
 STEERING_FULL_LEFT = 1460
 STEERING_CENTER = 1558
-STEERING_GAIN = 12
+STEERING_GAIN = 1.8 #Was 12
 
 ### COMPASS SETUP
 compass = compass_device(COMPASS_PORT)
@@ -76,17 +76,18 @@ while True:
         bearing_to_waypoint = curr_location_point.bearing(curr_waypoint_point)
 
         ### Determine Speed
-        if meters_to_waypoint <= 2.5:  # Made it!
+        if meters_to_waypoint <= 3:  # Made it!
             print("*******WP REACHED!*******"),
-            if curr_waypoint == len(waypoints):
-                servo.reset_all()  # reset all servos
+            if curr_waypoint == len(waypoints) -1:
                 print("\n\n************DONE!**********")
+                servo.reset_all()  # reset all servos
                 exit(1)
             else:  # On to Next Waypoint!
                 curr_waypoint += 1
                 curr_waypoint_point = waypoints[curr_waypoint]
+                servo.set_servo_ms(DRIVE_SERVO, THROTTLE_MAX)  # Set Drive on Max Speed
 
-        elif meters_to_waypoint <= 4:  # Getting close!
+        elif meters_to_waypoint <= 5:  # Getting close!
             servo.set_servo_ms(1, THROTTLE_MIN)  # Set Drive On at Min Speed
             print("*******UNDER 4 METERS, SLOW DOWN*******"),
 
