@@ -23,13 +23,19 @@ while lat == 0.0 and lng == 0.0:
     gps_device.update()
     lat = gps_device.get_current_latitude()
     lng = gps_device.get_current_longitude()
+    lat = 1.1
+    lng = 2.2
 
 ### READ CONFIG
 config = ConfigParser.ConfigParser()
 config.read(config_path)
 
 ### CREATE CONFIG
-config.add_section(waypoint_num)
+try:
+    config.add_section(waypoint_num)
+except ConfigParser.DuplicateSectionError:
+    pass
+
 config.set(waypoint_num, 'latitude', lat)
 config.set(waypoint_num, 'longitude', lng)
 
@@ -39,8 +45,5 @@ with open(config_path, 'wb') as configfile:
 
 ### PRINT SUCCESS
 print (
-    "Saved {0}, {1} as waypoint {2} to {3} .".format(gps_device.get_current_latitude(),
-                                                     gps_device.get_current_longitude(),
-                                                     waypoint_num,
-                                                     config_path)
+    "Saved {0}, {1} as waypoint {2} to {3} .".format(lat, lng, waypoint_num, config_path)
 )
