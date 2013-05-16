@@ -1,1 +1,3 @@
-__author__ = 'cyface'
+"""
+    Robot Brain Files
+"""

@@ -1,1 +1,3 @@
-__author__ = 'cyface'
+"""
+    Waypoints files and manipulation scripts
+"""
