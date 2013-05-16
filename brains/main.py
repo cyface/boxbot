@@ -45,7 +45,7 @@ THROTTLE_MIN = 1605
 STEERING_FULL_RIGHT = 1660
 STEERING_FULL_LEFT = 1460
 STEERING_CENTER = 1558
-STEERING_GAIN = 1.8 #Was 12
+STEERING_GAIN = 1.8
 
 ### COMPASS SETUP
 compass = compass_device(COMPASS_PORT)
@@ -60,6 +60,7 @@ time = ""
 ### MAIN LOOP
 while True:
     try:  # Handler to Catch Ctrl-C
+
         ### Get Latest Data
         gps_device.update()
         time = gps_device.get_datetime()
@@ -76,7 +77,7 @@ while True:
         bearing_to_waypoint = curr_location_point.bearing(curr_waypoint_point)
 
         ### Determine Speed
-        if meters_to_waypoint <= 3:  # Made it!
+        if meters_to_waypoint <= 2.6:  # Made it!
             print("*******WP REACHED!*******"),
             if curr_waypoint == len(waypoints) -1:
                 print("\n\n************DONE!**********")
@@ -89,15 +90,14 @@ while True:
 
         elif meters_to_waypoint <= 5:  # Getting close!
             servo.set_servo_ms(1, THROTTLE_MIN)  # Set Drive On at Min Speed
-            print("*******UNDER 4 METERS, SLOW DOWN*******"),
+            print("*******WP CLOSE!******"),
 
         else:  # Long Way To Go
             servo.set_servo_ms(DRIVE_SERVO, THROTTLE_MAX)  # Set Drive on Max Speed
 
         ### Determine Direction
         bearing_diff = (((bearing_to_waypoint + 180 - heading) % 360) - 180) * -1  # -1 fixes right/left steering
-
-        bearing_ms = int((bearing_diff * STEERING_GAIN) + STEERING_CENTER)  # Convert Diff to Millisecond Setting
+        bearing_ms = int((bearing_diff * STEERING_GAIN) + STEERING_CENTER)  # Convert Diff to Servo Millisecond Setting
         servo.set_servo_ms(STEERING_SERVO, bearing_ms)  # set steering
 
         ### Log
@@ -109,8 +109,8 @@ while True:
             bearing_to_waypoint,
             heading,
             bearing_diff,
-            servo.get_servo_ms(
-                STEERING_SERVO)))
-    except KeyboardInterrupt:
+            servo.get_servo_ms(STEERING_SERVO)))
+
+    except KeyboardInterrupt:  # Ctrl-C
         servo.reset_all()
         sys.exit(0)
