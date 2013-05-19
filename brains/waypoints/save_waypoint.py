@@ -23,8 +23,6 @@ while lat == 0.0 and lng == 0.0:
     gps_device.update()
     lat = gps_device.get_current_latitude()
     lng = gps_device.get_current_longitude()
-    lat = 1.1
-    lng = 2.2
 
 ### READ CONFIG
 config = ConfigParser.ConfigParser()
