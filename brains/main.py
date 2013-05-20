@@ -18,7 +18,7 @@ config = ConfigParser.ConfigParser()
 config.read(os.path.join(brain_dir, 'bot.cfg'))
 SERVO_PORT = config.get('ports', 'servos')
 COMPASS_PORT = config.get('ports', 'compass')
-COMPASS_OFFSET = int(config.get('compass', 'offset'))
+COMPASS_OFFSET = float(config.get('compass', 'offset'))
 
 waypoint_config_path = os.path.join(brain_dir, "waypoints", "school_points.cfg")
 waypoint_config = ConfigParser.ConfigParser()

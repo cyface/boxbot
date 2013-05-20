@@ -1,2 +1,2 @@
 #!/bin/sh
-python ./brains/waypoints/save_waypoint.py $1 $2
+python ./brains/waypoints/save_waypoint.py school_points.cfg $1
