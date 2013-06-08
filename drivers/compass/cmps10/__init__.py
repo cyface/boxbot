@@ -7,6 +7,7 @@
 """
 import struct
 import serial
+import time
 from .. import CompassDevice
 
 MAG_ADJUSTMENT = 11
@@ -28,3 +29,33 @@ class CMPS10(CompassDevice):
         heading_tuple = struct.unpack('>h', heading_string)
         heading_float = heading_tuple[0] / 10.0
         return heading_float
+
+    def start_calibration(self):
+        message = '\x55\xC0\x16\x01\xF0'
+        ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
+        ser.write(message)
+        ser.close()
+
+    def mark_calibration_point(self):
+        message = '\x55\xC0\x16\x01\xF5'
+        ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
+        ser.write(message)
+        ser.close()
+
+    def reset_calibration(self):
+        message = '\x55\xC0\x16\x01\x20'
+        ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
+        ser.write(message)
+        ser.close()
+        time.sleep(.1)
+
+        message = '\x55\xC0\x16\x01\x2A'
+        ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
+        ser.write(message)
+        ser.close()
+        time.sleep(.1)
+
+        message = '\x55\xC0\x16\x01\x60'
+        ser = serial.Serial(port=self.port, baudrate=19200, stopbits=serial.STOPBITS_TWO, timeout=self.timeout)
+        ser.write(message)
+        ser.close()
