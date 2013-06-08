@@ -40,10 +40,13 @@ servo.reset_all()
 STEERING_SERVO = 0
 DRIVE_SERVO = 1
 
-THROTTLE_MAX = 1660
-THROTTLE_MIN = 1650
+#THROTTLE_MAX = 1660
+THROTTLE_MAX = 1650
+#THROTTLE_MIN = 1650
+THROTTLE_MIN = 1620
 STEERING_FULL_RIGHT = 1660
 STEERING_FULL_LEFT = 1460
+#STEERING_CENTER = 1557
 STEERING_CENTER = 1557
 STEERING_GAIN = 1.3
 
@@ -77,7 +80,7 @@ while True:
         bearing_to_waypoint = curr_location_point.bearing(curr_waypoint_point)
 
         ### Determine Speed
-        if meters_to_waypoint <= 3.2:  # Made it!
+        if meters_to_waypoint <= 4.2:  # Made it!
             print("*******WP REACHED!*******"),
             if curr_waypoint == len(waypoints) -1:
                 print("\n\n************DONE!**********")
