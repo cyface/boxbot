@@ -3,7 +3,6 @@
 import ConfigParser
 import sys
 import os
-import ConfigParser
 
 from upoints import point
 from drivers.servo.maestro import MaestroServoController as servo_device
