@@ -8,7 +8,6 @@ from upoints import point
 from drivers.servo.maestro import MaestroServoController as servo_device
 from drivers.compass.cmps10 import CMPS10 as compass_device
 from drivers.gps.gpsd import GPSDGPS as gps_device
-import os
 
 brain_dir = PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
